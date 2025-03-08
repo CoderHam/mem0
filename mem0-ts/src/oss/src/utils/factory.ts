@@ -1,5 +1,7 @@
 import { OpenAIEmbedder } from "../embeddings/openai";
+import { OllamaEmbedder } from "../embeddings/ollama";
 import { OpenAILLM } from "../llms/openai";
+import { OllamaLLM } from "../llms/ollama";
 import { OpenAIStructuredLLM } from "../llms/openai_structured";
 import { AnthropicLLM } from "../llms/anthropic";
 import { GroqLLM } from "../llms/groq";
@@ -16,6 +18,8 @@ export class EmbedderFactory {
     switch (provider.toLowerCase()) {
       case "openai":
         return new OpenAIEmbedder(config);
+      case "ollama":
+        return new OllamaEmbedder(config);
       default:
         throw new Error(`Unsupported embedder provider: ${provider}`);
     }
@@ -33,6 +37,8 @@ export class LLMFactory {
         return new AnthropicLLM(config);
       case "groq":
         return new GroqLLM(config);
+      case "ollama":
+        return new OllamaLLM(config);
       default:
         throw new Error(`Unsupported LLM provider: ${provider}`);
     }
@@ -48,7 +54,9 @@ export class VectorStoreFactory {
         return new Qdrant(config as any); // Type assertion needed as config is extended
       case "redis":
         return new RedisDB(config as any); // Type assertion needed as config is extended
-      default:
+        case "chroma":
+          return new Chroma(config as any); // Type assertion needed as config is extended
+        default:
         throw new Error(`Unsupported vector store provider: ${provider}`);
     }
   }

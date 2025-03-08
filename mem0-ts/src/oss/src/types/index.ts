@@ -15,6 +15,7 @@ export interface Message {
 export interface EmbeddingConfig {
   apiKey: string;
   model?: string;
+  url?: string;
 }
 
 export interface VectorStoreConfig {
